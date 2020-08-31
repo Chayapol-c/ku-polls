@@ -1,5 +1,5 @@
 # ku-polls
-Django application for conduction a poll or survey.
+Django application for conducting a poll or survey.
 
 ## Document
 [My Requirement](../../wiki/Requirement)
