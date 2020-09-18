@@ -7,3 +7,5 @@ Django application for conducting a poll or survey.
 [My Vision Statement](../../wiki/Vision%20Statement)
 
 [My Iteration 1 Plan](../../wiki/Iteration%201%20Plan)
+
+[My Iteration 2 Plan](../../wiki/Iteration%202%20Plan)
