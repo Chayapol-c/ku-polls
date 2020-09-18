@@ -4,13 +4,13 @@
 
 <h1>{{ question.question_text }}</h1>
 
-<table id = "result" border="1px solid black" >
-{% for choice in question.choice_set.all %}
+<table>
+    {% for choice in question.choice_set.all %}
     <tr>
-        <td>{{ choice.choice_text }}</td>  
+        <td>{{ choice.choice_text }}</td>
         <td>{{ choice.votes }} </td>
-    </tr> 
-{% endfor %}
+    </tr>
+    {% endfor %}
 </table>
 <br>
 
