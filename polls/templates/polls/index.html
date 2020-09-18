@@ -14,7 +14,7 @@
     {% for question in latest_question_list %}
         <li>
             {{ question.question_text }}
-            <a href="{% url 'polls:detail' question.id %}"> <button>vote</button></a> 
+            <a href="{% url 'polls:detail' question.id %}"> <button {%  if not question.can_vote %} disabled {% endif %}>vote</button></a> 
             <a href="{% url 'polls:results' question.id %}">  <button>results</button> </a>
         </li>
     {% endfor %}
