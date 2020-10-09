@@ -9,3 +9,5 @@ Django application for conducting a poll or survey.
 [My Iteration 1 Plan](../../wiki/Iteration%201%20Plan)
 
 [My Iteration 2 Plan](../../wiki/Iteration%202%20Plan)
+
+[![Build Status](https://travis-ci.com/github/Chayapol-c/ku-polls.svg?branch=master)](https://travis-ci.com/github/Chayapol-c/ku-polls)
