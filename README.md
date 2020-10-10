@@ -1,5 +1,5 @@
 # ku-polls
-[![Build Status](https://travis-ci.com/github/Chayapol-c/ku-polls.svg?branch=master)](https://travis-ci.com/github/Chayapol-c/ku-polls)
+[![Build Status](https://travis-ci.com/Chayapol-c/ku-polls.svg?branch=master)](https://travis-ci.com/Chayapol-c/ku-polls)
 [![codecov](https://codecov.io/gh/Chayapol-c/ku-polls/branch/master/graph/badge.svg)](https://codecov.io/gh/Chayapol-c/ku-polls)
 
 Django application for conducting a poll or survey.
