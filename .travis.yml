@@ -1,7 +1,7 @@
 language: python
 
 # you can use Python 3.7 instead
-python: "3.8"
+python: "3.7"
 
 # don't clone more than necessary
 
@@ -9,6 +9,7 @@ python: "3.8"
 install:
   pip install -r requirements.txt
   pip install django
+  pip install environ
 
 # script to run tests. Script can have many commands, one per line.
 script:
