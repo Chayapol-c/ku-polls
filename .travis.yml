@@ -1,11 +1,9 @@
 language: python
 
 # you can use Python 3.7 instead
-python: "3.6"
+python: "3.8"
 
 # don't clone more than necessary
-git:
-  depth: 1
 
 # Install any dependencies
 install:
