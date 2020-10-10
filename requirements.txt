@@ -1,2 +1,4 @@
 # required packages
 coverage
+Django
+django-environ
