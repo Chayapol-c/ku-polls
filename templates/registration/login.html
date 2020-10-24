@@ -1,0 +1,17 @@
+<html>
+    <body>
+    <h2>Login</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <table style="padding: 2ex;">
+        {{ form.as_table }}
+        </table>
+        <button type="submit">Login</button>
+        <!-- if your app redirects user to login before accessing some pages, then next contains return url -->
+        <input type="hidden" name="next" value="{{next}}" />
+      </form>
+    <p>
+    <a href="{% url 'password_reset' %}">Forgot password?</a>
+    </p>
+    </body>
+    </html>

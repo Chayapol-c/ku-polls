@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import Question, Choice
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     """Show list of questions."""
@@ -24,9 +24,10 @@ def results(request, question_id):
     questions = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': questions})
 
-
+@login_required(login_url='/account/login/')
 def vote(request, question_id):
     """Update choice count when select."""
+    user = request.user
     questions = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = questions.choice_set.get(pk=request.POST['choice'])

@@ -7,4 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),
     path('', view.index),
+    path('account/', include('django.contrib.auth.urls')),
 ]
