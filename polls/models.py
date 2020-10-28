@@ -9,6 +9,10 @@ from django.utils import timezone
 class Question(models.Model):
     """Django model Object for questions."""
 
+    class Meta:
+        permissions = (('can_vote', 'can submit a vote'),
+                                ('can_view_result', 'can review poll results'))
+
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     end_date = models.DateTimeField('ending date ')

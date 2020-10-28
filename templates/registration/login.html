@@ -6,7 +6,8 @@
         <table style="padding: 2ex;">
         {{ form.as_table }}
         </table>
-        <button type="submit">Login</button>
+        <button type="submit">Please <a href="{% url 'login'%}?next={{request.path}}"PLogin</a>
+        </button>
         <!-- if your app redirects user to login before accessing some pages, then next contains return url -->
         <input type="hidden" name="next" value="{{next}}" />
       </form>

@@ -4,7 +4,9 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import Question, Choice
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 def index(request):
     """Show list of questions."""
@@ -24,11 +26,13 @@ def results(request, question_id):
     questions = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': questions})
 
-@login_required(login_url='/account/login/')
+@permission_required('polls.can_vote')
 def vote(request, question_id):
     """Update choice count when select."""
     user = request.user
     questions = get_object_or_404(Question, pk=question_id)
+    print("current user is", user.id, "login", user.username)
+    print("Real name:", user.first_name, user.last_name)
     try:
         selected_choice = questions.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
@@ -53,3 +57,7 @@ def vote_for_poll(request, question_id):
         messages.error(request, "This Question can not vote")
         return redirect('polls:index')
     return render(request, 'polls/detail.html', {'question': questions})
+
+# class EyesOnlyView(LoginRequiredMixin, ListView):
+#     # this is the default. Same default as in auth_required decorator
+#     login_url = '/accounts/login/'
