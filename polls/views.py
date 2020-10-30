@@ -2,7 +2,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from .models import Question, Choice
+from .models import Question, Choice,Vote
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,47 +17,40 @@ def index(request):
 
 def detail(request, question_id):
     """Show detail of each selected question."""
-    questions = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/detail.html', {'question': questions})
+    question = get_object_or_404(Question, pk=question_id)
+    lasted_vote = question.vote_set.get(user= request.user)
+    return render(request, 'polls/detail.html', {'question': question, 'lasted_vote': lasted_vote})
 
 
 def results(request, question_id):
     """Show result of selected question."""
-    questions = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/results.html', {'question': questions})
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/results.html', {'question': question})
 
-@permission_required('polls.can_vote')
+
+
+@login_required
 def vote(request, question_id):
     """Update choice count when select."""
     user = request.user
-    questions = get_object_or_404(Question, pk=question_id)
+
+    question = get_object_or_404(Question, pk=question_id)
     print("current user is", user.id, "login", user.username)
     print("Real name:", user.first_name, user.last_name)
     try:
-        selected_choice = questions.choice_set.get(pk=request.POST['choice'])
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
         return render(request, 'polls/detail.html', {
-            'question': questions,
+            'question': question,
             'error_message': "You didn't select a choice.",
         })
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(questions.id,)))
+        if question.vote_set.filter(user=user).exists():
+            vote = question.vote_set.get(user=user)
+            vote.choice = selected_choice
+            vote.save()
+        else:
+            selected_choice.vote_set.create(user=user, question=question)
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
-
-def vote_for_poll(request, question_id):
-    """Show error message and redirect to index page if question is not allowed."""
-    questions = get_object_or_404(Question, pk=question_id)
-    if not questions.can_vote():
-        messages.error(request, "This Question can not vote")
-        return redirect('polls:index')
-    return render(request, 'polls/detail.html', {'question': questions})
-
-# class EyesOnlyView(LoginRequiredMixin, ListView):
-#     # this is the default. Same default as in auth_required decorator
-#     login_url = '/accounts/login/'

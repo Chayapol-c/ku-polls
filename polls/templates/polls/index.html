@@ -8,6 +8,9 @@
    Please <a href="{% url 'login' %}">Login</a>
 {% endif %}
 
+<a href="{% url 'logout' %}"> Log out</a>
+
+
 {% if messages %}
 <ul class="messages">
   {% for msg in messages %}
