@@ -8,5 +8,4 @@ urlpatterns = [
     path('polls/', include('polls.urls')),
     path('', views.index),
     path('account/', include('django.contrib.auth.urls')),
-    path('signup/', views.signup, name='signup'),
 ]
