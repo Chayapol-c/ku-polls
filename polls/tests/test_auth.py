@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class UserAuthenticationTest(TestCase):
-    """ """
+    """Test when user login and logout."""
 
     def test_user_can_login(self):
         """Logged in user can see greeting word 'Welcome back (username)' on index page."""
@@ -21,7 +21,7 @@ class UserAuthenticationTest(TestCase):
 
     def test_user_can_logout(self):
         """User will redirect to index page after logged out."""
-        user = User.objects.create_user(username='test', password='12test12', email='test@example.com')
+        User.objects.create_user(username='test', password='12test12', email='test@example.com')
         response = self.client.post('/account/login/', {'username': 'test', 'password': '12test12'}, follow=True)
         url = reverse("polls:index")
         response = self.client.get(url)

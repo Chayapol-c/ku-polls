@@ -1,10 +1,10 @@
-"""Django test for detail view. """
+"""Django test for detail view."""
 import datetime
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
 from polls.models import Question
-
+from django.contrib.auth.models import User
 
 def create_question(question_text, days):
     """
@@ -24,6 +24,8 @@ class QuestionDetailViewTests(TestCase):
         """The detail view of a question with a pub_date in the future returns a 302."""
         future_question = create_question(
             question_text='Future question.', days=5)
+        User.objects.create_user(username='test', password='12test12', email='test@example.com')
+        self.client.post('/account/login/', {'username': 'test', 'password': '12test12'}, follow=True)
         url = reverse('polls:detail', args=(future_question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
@@ -32,6 +34,8 @@ class QuestionDetailViewTests(TestCase):
         """The detail view of a question with a pub_date in the past displays the question's text."""
         past_question = create_question(
             question_text='Past Question.', days=-5)
+        User.objects.create_user(username='test', password='12test12', email='test@example.com')
+        self.client.post('/account/login/', {'username': 'test', 'password': '12test12'}, follow=True)
         url = reverse('polls:detail', args=(past_question.id,))
         response = self.client.get(url)
         self.assertEqual(302, response.status_code)

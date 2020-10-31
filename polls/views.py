@@ -43,7 +43,6 @@ def index(request):
     contexts = {'latest_question_list': latest_question_list}
     return render(request, 'polls/index.html', contexts)
 
-
 def detail(request, question_id):
     """Show detail of each selected question."""
     question = get_object_or_404(Question, pk=question_id)
