@@ -6,7 +6,8 @@
     {% csrf_token %}
     {% for choice in question.choice_set.all %}
 
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" {% if lasted_vote.choice  == choice %} checked {% endif %} >
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"
+        {% if lasted_vote.choice  == choice %} checked {% endif %}>
     <label for="choice{{ forloop.counter }}">{{ choice }}</label><br>
 
     {% endfor %}

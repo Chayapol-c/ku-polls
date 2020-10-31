@@ -2,7 +2,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from .models import Question, Choice,Vote
+from .models import Question, Choice, Vote
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,7 +18,7 @@ def index(request):
 def detail(request, question_id):
     """Show detail of each selected question."""
     question = get_object_or_404(Question, pk=question_id)
-    lasted_vote = question.vote_set.get(user= request.user)
+    lasted_vote = question.vote_set.get(user=request.user)
     return render(request, 'polls/detail.html', {'question': question, 'lasted_vote': lasted_vote})
 
 
@@ -26,7 +26,6 @@ def results(request, question_id):
     """Show result of selected question."""
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
-
 
 
 @login_required
@@ -53,4 +52,3 @@ def vote(request, question_id):
         else:
             selected_choice.vote_set.create(user=user, question=question)
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
-

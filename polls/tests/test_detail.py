@@ -1,3 +1,4 @@
+"""Django test for detail view. """
 import datetime
 from django.test import TestCase
 from django.utils import timezone
@@ -14,6 +15,7 @@ def create_question(question_text, days):
     time = timezone.now() + datetime.timedelta(days=days)
     time_end = timezone.now() + datetime.timedelta(days=days, hours=2)
     return Question.objects.create(question_text=question_text, pub_date=time, end_date=time_end)
+
 
 class QuestionDetailViewTests(TestCase):
     """Test for detail page."""

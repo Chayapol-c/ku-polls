@@ -4,15 +4,13 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-# Create your models here.
-
 
 class Question(models.Model):
     """Django model Object for questions."""
 
     class Meta:
         permissions = (('can_vote', 'can submit a vote'),
-                                ('can_view_result', 'can review poll results'))
+                       ('can_view_result', 'can review poll results'))
 
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
@@ -48,7 +46,6 @@ class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
 
-    
     def __str__(self):
         """Return string representation for Choice."""
         return self.choice_text
@@ -57,16 +54,13 @@ class Choice(models.Model):
     def votes(self):
         return self.question.vote_set.filter(choice=self).count()
 
+
 class Vote(models.Model):
-    """ """
-    
+    """Django model Object for vote."""
+
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True,default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, default=0)
 
     def __str__(self):
         return f'{self.question.question_text} voted'
-
-
-
-        

@@ -1,4 +1,4 @@
-"""Urls config for Polls app."""
+"""Urls navigation for Polls app."""
 from django.urls import path
 
 from . import views

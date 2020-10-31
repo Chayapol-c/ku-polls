@@ -1,3 +1,4 @@
+"""Django test for Django Model"""
 import datetime
 from django.test import TestCase
 from django.utils import timezone
@@ -6,7 +7,7 @@ from polls.models import Question
 
 
 class QuestionModelTests(TestCase):
-    """Tests for Django model."""
+    """Tests for Django models."""
 
     def test_was_published_recently_with_future_question(self):
         """was_published_recently() returns False for questions whose pub_date is in the future."""
