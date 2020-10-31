@@ -8,13 +8,15 @@ from django.contrib.auth.models import User
 class Question(models.Model):
     """Django model Object for questions."""
 
-    class Meta:
-        permissions = (('can_vote', 'can submit a vote'),
-                       ('can_view_result', 'can review poll results'))
-
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     end_date = models.DateTimeField('ending date ')
+
+    class Meta:
+        """Meta inner class for giving permissions to Question methods."""
+
+        permissions = (('can_vote', 'can submit a vote'),
+                       ('can_view_result', 'can review poll results'))
 
     def __str__(self):
         """Return string representation for Question."""
@@ -52,6 +54,7 @@ class Choice(models.Model):
 
     @property
     def votes(self):
+        """Return vote_set count."""
         return self.question.vote_set.filter(choice=self).count()
 
 
@@ -63,4 +66,5 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, default=0)
 
     def __str__(self):
+        """Return String representation of Vote."""
         return f'{self.question.question_text} voted'

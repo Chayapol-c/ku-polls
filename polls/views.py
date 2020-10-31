@@ -4,17 +4,17 @@ import logging.config
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from .models import Question, Choice, Vote
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, permission_required
+from .models import Question, Choice
+from django.contrib.auth.decorators import login_required
 from django.dispatch import receiver
-from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed 
+from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
 from mysite.settings import LOGGING
 
 logging.config.dictConfig(LOGGING)
 logger = logging.getLogger('polls')
 
 def get_client_ip(request):
+    """Return ip of current user."""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -24,14 +24,17 @@ def get_client_ip(request):
 
 @receiver(user_logged_in)
 def login_logging(sender, request, user, **kwargs):
+    """Show an formated info logging when user is logged in."""
     logger.info(f'User {user.username} with ip: {get_client_ip(request)} has log in')
 
 @receiver(user_logged_out)
-def login_logging(sender, request, user, **kwargs):
-    logger.info(f'User {user.username} with ip: {get_client_ip(request)} has log our')
+def logout_logging(sender, request, user, **kwargs):
+    """Show an formated info logging when user is logged out."""
+    logger.info(f'User {user.username} with ip: {get_client_ip(request)} has log out')
 
 @receiver(user_login_failed)
-def login_logging(sender, request, user, **kwargs):
+def failed_login_logging(sender, request, user, **kwargs):
+    """Show a warning formated info logging when user give a wrong password or username."""
     logger.warning(f'User {user.username} with ip: {get_client_ip(request)} log in failed')
 
 def index(request):
@@ -44,6 +47,8 @@ def index(request):
 def detail(request, question_id):
     """Show detail of each selected question."""
     question = get_object_or_404(Question, pk=question_id)
+    if not question.can_vote():
+        return redirect("polls:index")
     lasted_vote = question.vote_set.get(user=request.user)
     return render(request, 'polls/detail.html', {'question': question, 'lasted_vote': lasted_vote})
 

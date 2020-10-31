@@ -135,17 +135,17 @@ LOGOUT_REDIRECT_URL = '/polls/'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters':{
-        'verbose':{
+    'formatters': {
+        'verbose': {
             'format': '%(asctime)s %(name)s %(levelname)s: %(message)s'
         }
     },
     'handlers': {
         'console': {
-            'class': 'logging.StreamHandler',            
+            'class': 'logging.StreamHandler',
             'formatter': 'verbose'
-            },
         },
+    },
 
     'root': {
         'handlers': ['console'],
