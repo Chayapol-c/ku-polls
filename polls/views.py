@@ -1,12 +1,38 @@
 """Views for Polls app."""
+import logging
+import logging.config
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import Question, Choice, Vote
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.dispatch import receiver
+from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed 
+from mysite.settings import LOGGING
 
+logging.config.dictConfig(LOGGING)
+logger = logging.getLogger('polls')
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+@receiver(user_logged_in)
+def login_logging(sender, request, user, **kwargs):
+    logger.info(f'User {user.username} with ip: {get_client_ip(request)} has log in')
+
+@receiver(user_logged_out)
+def login_logging(sender, request, user, **kwargs):
+    logger.info(f'User {user.username} with ip: {get_client_ip(request)} has log our')
+
+@receiver(user_login_failed)
+def login_logging(sender, request, user, **kwargs):
+    logger.warning(f'User {user.username} with ip: {get_client_ip(request)} log in failed')
 
 def index(request):
     """Show list of questions."""
@@ -51,4 +77,5 @@ def vote(request, question_id):
             vote.save()
         else:
             selected_choice.vote_set.create(user=user, question=question)
+        logger.info(f"User {user.username} submit a vote for question {question.id} ")
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
